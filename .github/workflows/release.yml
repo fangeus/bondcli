@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build bondcli
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - aarch64-unknown-linux-gnu
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+
+      - name: Build release binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Strip binary (Linux x86_64)
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        run: strip target/x86_64-unknown-linux-gnu/release/bondcli
+
+      - name: Strip binary (Linux aarch64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: strip target/aarch64-unknown-linux-gnu/release/bondcli
+
+      - name: Rename binary
+        run: |
+          if [ "${{ matrix.target }}" = "x86_64-unknown-linux-gnu" ]; then
+            cp target/x86_64-unknown-linux-gnu/release/bondcli bondcli-linux-x86_64
+          else
+            cp target/aarch64-unknown-linux-gnu/release/bondcli bondcli-linux-aarch64
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bondcli-${{ matrix.target }}
+          path: |
+            bondcli-linux-*
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/bondcli-x86_64-unknown-linux-gnu/bondcli-linux-x86_64
+            artifacts/bondcli-aarch64-unknown-linux-gnu/bondcli-linux-aarch64
+          generate_release_notes: true
