@@ -1,0 +1,30 @@
+# Generated files
+target/
+*.swp
+*.swo
+*.iml
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+
+# Test coverage
+coverage/
+*.profraw
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
