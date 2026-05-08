@@ -1,6 +1,8 @@
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, BufRead, Write};
 use std::path::Path;
+#[cfg(unix)]
+use libc;
 
 use crate::error::{BondError, Result};
 
