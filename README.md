@@ -30,15 +30,14 @@ A command-line tool written in Rust for configuring network interface bonding on
 ### Pre-built Binary (Recommended)
 
 ```bash
-curl -L -o bondcli https://github.com/xxx/bondcli/releases/latest/download/bondcli-linux-x86_64
+curl -L -o bondcli https://github.com/fangeus/bondcli/releases/latest/download/bondcli-linux-x86_64
 chmod +x bondcli
 sudo mv bondcli /usr/local/bin/bondcli
 ```
-
-Or use the Makefile:
-
 ```bash
-sudo make install-prebuilt
+curl -L -o bondcli https://github.com/fangeus/bondcli/releases/latest/download/bondcli-linux-aarch64
+chmod +x bondcli
+sudo mv bondcli /usr/local/bin/bondcli
 ```
 
 ### Build from Source
@@ -48,7 +47,7 @@ Requirements:
 - Cargo
 
 ```bash
-git clone https://github.com/xxx/bondcli.git
+git clone https://github.com/fangeus/bondcli.git
 cd bondcli
 make release
 sudo make install

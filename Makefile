@@ -26,7 +26,7 @@ install-prebuilt:
 		aarch64) FILE="bondcli-linux-aarch64" ;; \
 		*) echo "[ERROR] Unsupported architecture: $$ARCH"; exit 1 ;; \
 	esac; \
-	curl -L -o /tmp/bondcli "https://github.com/xxx/bondcli/releases/latest/download/$$FILE"; \
+	curl -L -o /tmp/bondcli "https://github.com/fangeus/bondcli/releases/latest/download/$$FILE"; \
 	install -m 755 /tmp/bondcli $(PREFIX)/bondcli; \
 	rm -f /tmp/bondcli; \
 	echo "[SUCCESS] bondcli installed"
